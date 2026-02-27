@@ -99,8 +99,21 @@ def edit_student_view(request, enrollment_id):
         if username:
             student.user.username = username
 
+        is_active = request.POST.get('active')
+        if is_active:
+            student.user.is_verified = is_active
+
 
         student.user.save()
         student.save()
         return redirect('admin_manage_students_view')
     return render(request, 'edit_student.html')
+
+@login_required
+@user_passes_test(is_institution_admin)
+def student_details_view(request, enrollment_id):
+    student = get_object_or_404(StudentProfile, enrollment_number=enrollment_id)
+    context = {
+        'student' : student
+    }
+    return render(request, 'student_details.html', context)

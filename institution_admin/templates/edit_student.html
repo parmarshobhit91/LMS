@@ -90,6 +90,15 @@
                                class="form-control">
                     </div>
 
+                    <div class="col-md-6">
+                        <label class="form-label">Active</label>
+                        <select name="active" class="form-control">
+                            <!-- Empty placeholder -->
+                            <option value="" {% if student.is_active is none %}selected{% endif %}>-- Select --</option>
+                            <option value="True" {% if student.is_active == True %}selected{% endif %}>True</option>
+                            <option value="False" {% if student.is_active == False %}selected{% endif %}>False</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Submit Button -->

@@ -1,0 +1,106 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}Student Details | LMS Admin{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>🎓 Student Details</h4>
+        <a href="{% url 'admin_manage_students_view' %}" class="btn btn-secondary">
+            ← Back to Students
+        </a>
+    </div>
+
+    <div class="row">
+
+        <!-- Profile Card -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+
+                    <img src="{% static 'images/default-profile.png' %}"
+                         class="rounded-circle mb-3"
+                         width="120"
+                         height="120">
+
+                    <h5 class="fw-bold">
+                        {{ student.user.first_name }} {{ student.user.last_name }}
+                    </h5>
+
+                    <p class="text-muted mb-1">
+                        @{{ student.user.username }}
+                    </p>
+
+                    {% if student.user.is_verified %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-danger">Inactive</span>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Card -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h5 class="mb-3">📋 Personal Information</h5>
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="30%">Enrollment Number</th>
+                            <td>{{ student.enrollment_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ student.user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone Number</th>
+                            <td>{{ student.user.phone_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Course Enrolled</th>
+                            <td>{{ student.course_enrolled }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date Joined</th>
+                            <td>{{ student.user.date_joined }}</td>
+                        </tr>
+                    </table>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-4 d-flex gap-2">
+
+                        <a href="{% url 'edit_student_view' student.enrollment_number %}"
+                           class="btn btn-warning">
+                           ✏ Edit
+                        </a>
+
+                        <a href="{% url 'delete_student_view' student.enrollment_number %}"
+                           class="btn btn-danger">
+                           🗑 Delete
+                        </a>
+
+                        <a href="{% url 'generate_certificate_view' student.enrollment_number %}"
+                           class="btn btn-success">
+                           🏆 Generate Certificate
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

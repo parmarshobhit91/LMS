@@ -18,5 +18,10 @@ urlpatterns = [
         "update-student/<str:enrollment_id>/",
         edit_student_view,
         name="edit_student_view"
+    ),
+    path(
+        "student-details/<str:enrollment_id>/",
+        student_details_view,
+        name="student_details_view"
     )
 ]
