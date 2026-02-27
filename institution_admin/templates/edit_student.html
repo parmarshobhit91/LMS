@@ -1,0 +1,109 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}Update Student | LMS Admin{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>✏ Update Student</h4>
+        <a href="{% url 'admin_manage_students_view' %}" class="btn btn-secondary">
+            ← Back to Students
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="row g-3">
+
+                    <!-- First Name -->
+                    <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <input type="text"
+                               name="first_name"
+                               value="{{ student.user.first_name }}"
+                               class="form-control"
+                        >
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <input type="text"
+                               name="last_name"
+                               value="{{ student.user.last_name }}"
+                               class="form-control"
+                        >
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="email"
+                               name="email"
+                               value="{{ student.user.email }}"
+                               class="form-control"
+                        >
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text"
+                               name="phone_number"
+                               value="{{ student.user.phone_number }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Enrollment Number -->
+                    <div class="col-md-6">
+                        <label class="form-label">Enrollment Number</label>
+                        <input type="text"
+                               name="enrollment_number"
+                               value="{{ student.enrollment_number }}"
+                               class="form-control"
+                               readonly>
+                    </div>
+
+                    <!-- Course Enrolled -->
+                    <div class="col-md-6">
+                        <label class="form-label">Course Enrolled</label>
+                        <input type="text"
+                               name="course_enrolled"
+                               value="{{ student.course_enrolled }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- User name -->
+                    <div class="col-md-6">
+                        <label class="form-label">Username</label>
+                        <input type="text"
+                               name="username"
+                               value="{{ student.username }}"
+                               class="form-control">
+                    </div>
+
+                </div>
+
+                <!-- Submit Button -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        Update Student
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

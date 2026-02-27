@@ -1,0 +1,64 @@
+@login_required
+def edit_student(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+
+    if request.user.role not in ["ADMIN", "FACULTY"]:
+        return redirect("home")
+
+    if request.method == "POST":
+        # Update user fields
+        student.user.username = request.POST.get("username")
+        student.user.email = request.POST.get("email")
+        student.user.phone_number = request.POST.get("phone")
+
+        # Update student fields (if any extra fields exist)
+        student.enrollment_number = request.POST.get("enrollment_number")
+
+        student.user.save()
+        student.save()
+
+        return redirect("manage_students_view")
+
+    return render(request, "edit_student.html", {"student": student})
+
+
+
+
+
+
+
+@login_required
+def delete_student(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+
+    if request.user.role not in ["ADMIN", "FACULTY"]:
+        return redirect("home")
+
+    if request.method == "POST":
+        student.user.delete()  # safer (removes both user + student)
+        return redirect("manage_students_view")
+
+    return render(request, "delete_student_confirm.html", {"student": student})
+
+
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Student
+
+
+@login_required
+def view_student(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+
+    # Optional permission restriction
+    if request.user.role not in ["ADMIN", "FACULTY"]:
+        return redirect("home")
+
+    context = {
+        "student": student
+    }
+    return render(request, "view_student.html", context)
+

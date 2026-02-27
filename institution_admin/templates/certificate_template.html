@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Completion Certificate</title>
+
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background: #f8f9fa;
+            padding: 40px;
+        }
+
+        .certificate-container {
+            border: 10px solid #0d6efd;
+            padding: 50px;
+            background: white;
+            text-align: center;
+        }
+
+        .certificate-title {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .student-name {
+            font-size: 30px;
+            font-weight: bold;
+            color: #0d6efd;
+            margin: 20px 0;
+        }
+
+        .details {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="certificate-container">
+
+    <div class="certificate-title">
+        🎓 Certificate of Completion
+    </div>
+
+    <p>This is to certify that</p>
+
+    <div class="student-name">
+        {{ student_first_name }} {{ student_last_name }}
+    </div>
+
+    <p>has successfully completed the course</p>
+
+    <h3>{{ course_name }}</h3>
+
+    <div class="details">
+        Completion Date: {{ completion_date }} <br>
+        Certificate ID: {{ certificate_id }}
+    </div>
+
+    <div class="footer">
+        LMS Official Certification
+    </div>
+
+</div>
+
+</body>
+</html>

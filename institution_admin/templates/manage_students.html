@@ -1,0 +1,148 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}Manage Students | LMS Admin{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>🎓 Manage Students</h4>
+    <a href="{% url 'student_register_view' %}" class="btn btn-primary">
+        + Add Student
+    </a>
+</div>
+
+<!-- Search -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-2">
+            <div class="col-md-4">
+                <input type="text" 
+                       name="search" 
+                       value="{{ request.GET.search }}"
+                       class="form-control"
+                       placeholder="Search by name or email">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark w-100">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Students Table -->
+<div class="card shadow-sm">
+    <div class="card-body table-responsive">
+
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Profile</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Enrolled Courses</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+
+                    <td>
+                        <img src="{% static 'images/default-profile.png' %}"
+                             width="40"
+                             height="40"
+                             class="rounded-circle">
+                    </td>
+
+                    <td>{{ student.user.username }}</td>
+                    <td>{{ student.user.email }}</td>
+                    <td>{{ student.user.phone_number }}</td>
+
+                    <td>
+                        {% if student.user.is_verified %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Not Active</span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ student.course_enrolled }}</td>
+
+                    <td>
+                        <a href="#" class="btn btn-sm btn-info">View</a>
+                        <a href="{% url 'edit_student_view' student.enrollment_number %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'delete_student_view' student.enrollment_number %}" class="btn btn-sm btn-danger">Delete</a>
+                        <a href="{% url 'generate_certificate_view' student.enrollment_number %}" 
+                        class="btn btn-sm btn-success">
+                        Certificate
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted">
+                        No students found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if students.has_other_pages %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        {% if students.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ students.previous_page_number }}">
+                Previous
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+        </li>
+        {% endif %}
+
+        {% for num in students.paginator.page_range %}
+            {% if students.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if students.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ students.next_page_number }}">
+                Next
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Next</span>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>
+{% endif %}
+
+{% endblock %}
