@@ -5,4 +5,4 @@ from . models import StudentProfile
 
 @admin.register(StudentProfile)
 class StudentProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'enrollment_number', 'course_enrolled']
+    list_display = ['user', 'enrollment_number']

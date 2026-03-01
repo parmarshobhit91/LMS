@@ -19,3 +19,50 @@ class Course(models.Model):
     def __str__(self):
         return self.course_name
     
+class CourseAttendance(models.Model):
+
+    STATUS_CHOICES = (
+        ('present', 'Present'),
+        ('absent', 'Absent'),
+    )
+    
+    student = models.ForeignKey(
+        'students.StudentProfile',
+        on_delete=models.CASCADE
+    )
+
+    course = models.ForeignKey(
+        'faculty.FacultyProfile',
+        on_delete=models.CASCADE
+    )
+
+    date = models.DateField()
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+
+    class Meta:
+        unique_together = ('student', 'course', 'date')
+
+class SubjectAttendance(models.Model):
+    
+    STATUS_CHOICES = (
+        ('present', 'Present'),
+        ('absent', 'Absent'),
+    )
+
+    student = models.ForeignKey(
+        'students.StudentProfile',
+        on_delete=models.CASCADE
+        )
+    
+    course = models.ForeignKey(
+        'courses.Course',
+        on_delete=models.CASCADE
+    )
+
+    date = models.DateField()
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+
+    class Meta:
+        unique_together = ('student', 'course', 'date')

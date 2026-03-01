@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from courses.models import Subject
 
 # Create your models here.
 
@@ -41,6 +42,12 @@ class FacultyProfile(models.Model):
     address = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    subjects = models.ManyToManyField(
+        Subject,
+        related_name='faculties',
+        blank=True
+    )
 
     def __str__(self):
         return f"Faculty: {self.user.email}"

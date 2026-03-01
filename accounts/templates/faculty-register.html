@@ -96,6 +96,98 @@
                             <input type="password" name="password2" class="form-control" required>
                         </div>
 
+                        <!-- Employee ID -->
+                        <div class="mb-3">
+                            <label class="form-label">Employee ID</label>
+                            <input type="text" name="employee_id" class="form-control" required>
+                        </div>
+
+                        <!-- Aadhar Number -->
+                        <div class="mb-3">
+                            <label class="form-label">Aadhar Number</label>
+                            <input type="text"
+                                name="aadhar_number"
+                                class="form-control"
+                                pattern="[0-9]{12}"
+                                maxlength="12"
+                                placeholder="Enter 12-digit Aadhar number"
+                                required>
+                        </div>
+
+                        <!-- Qualification -->
+                        <div class="mb-3">
+                            <label class="form-label">Qualification</label>
+                            <input type="text" 
+                                name="qualification" 
+                                class="form-control"
+                                placeholder="e.g. M.Tech, PhD, MBA"
+                                required>
+                        </div>
+
+                        <!-- Specialization -->
+                        <div class="mb-3">
+                            <label class="form-label">Specialization</label>
+                            <input type="text" 
+                                name="specialization" 
+                                class="form-control"
+                                placeholder="e.g. Computer Science"
+                                required>
+                        </div>
+                        
+                        <!-- Faculty Role -->
+                        <div class="mb-3">
+                            <label class="form-label">Faculty Role</label>
+                            <select name="faculty_role" class="form-select" required>
+                                <option value="">Select Role</option>
+                                <option value="Instructor">Instructor</option>
+                                <option value="Hod">Hod</option>
+                                <option value="Admissions_officer">Admissions_officer</option>
+                                <option value="Finance_officer">Finance_officer</option>
+                            </select>
+                        </div>
+
+                        <!-- Experience Years -->
+                        <div class="mb-3">
+                            <label class="form-label">Experience (Years)</label>
+                            <input type="number" 
+                                name="experience_years" 
+                                class="form-control"
+                                min="0"
+                                max="50"
+                                required>
+                        </div>
+
+                        <!-- Salary -->
+                        <div class="mb-3">
+                            <label class="form-label">Salary</label>
+                            <input type="number" 
+                                name="salary" 
+                                class="form-control"
+                                min="0"
+                                step="0.01"
+                                placeholder="Enter salary amount"
+                                required>
+                        </div>
+
+                        <!-- Joining Date -->
+                        <div class="mb-3">
+                            <label class="form-label">Joining Date</label>
+                            <input type="date" 
+                                name="joining_date" 
+                                class="form-control"
+                                required>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-4">
+                            <label class="form-label">Address</label>
+                            <textarea name="address"
+                                    class="form-control"
+                                    rows="3"
+                                    placeholder="Enter full address"
+                                    required></textarea>
+                        </div>
+
                         <!-- Submit Button -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success">

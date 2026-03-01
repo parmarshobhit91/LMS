@@ -1,0 +1,145 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}Manage Faculties | LMS Admin{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>👨‍🏫 Manage Faculties</h4>
+    <a href="{% url 'faculty_register_view' %}" class="btn btn-primary">
+        + Add Faculty
+    </a>
+</div>
+
+<!-- Search -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-2">
+            <div class="col-md-4">
+                <input type="text" 
+                       name="search" 
+                       value="{{ request.GET.search }}"
+                       class="form-control"
+                       placeholder="Search by name or email">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark w-100">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Faculties Table -->
+<div class="card shadow-sm">
+    <div class="card-body table-responsive">
+
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Profile</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for faculty in faculties %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+
+                    <td>
+                        <img src="{% static 'images/default-profile.png' %}"
+                             width="40"
+                             height="40"
+                             class="rounded-circle">
+                    </td>
+
+                    <td>{{ faculty.user.username }}</td>
+                    <td>{{ faculty.user.email }}</td>
+                    <td>{{ faculty.user.phone_number }}</td>
+
+                    <td>
+                        {% if faculty.user.is_verified %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Not Active</span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ faculty.department }}</td>
+
+                    <td>
+                        <a href="{% url 'faculty_details_view' faculty.id %}" 
+                           class="btn btn-sm btn-info">
+                           View
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted">
+                        No faculties found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if faculties.has_other_pages %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        {% if faculties.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ faculties.previous_page_number }}">
+                Previous
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+        </li>
+        {% endif %}
+
+        {% for num in faculties.paginator.page_range %}
+            {% if faculties.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if faculties.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ faculties.next_page_number }}">
+                Next
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Next</span>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

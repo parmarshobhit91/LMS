@@ -1,0 +1,129 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}Faculty Details | LMS Admin{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>👨‍🏫 Faculty Details</h4>
+        <a href="{% url 'manage_faculties_view' %}" class="btn btn-secondary">
+            ← Back to Faculties
+        </a>
+    </div>
+
+    <div class="row">
+
+        <!-- Profile Card -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+
+                    <img src="{% static 'images/default-profile.png' %}"
+                         class="rounded-circle mb-3"
+                         width="120"
+                         height="120">
+
+                    <h5 class="fw-bold">
+                        {{ faculty.user.first_name }} {{ faculty.user.last_name }}
+                    </h5>
+
+                    <p class="text-muted mb-1">
+                        @{{ faculty.user.username }}
+                    </p>
+
+                    {% if faculty.user.is_verified %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-danger">Inactive</span>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Card -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h5 class="mb-3">📋 Faculty Information</h5>
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="30%">Employee ID</th>
+                            <td>{{ faculty.employee_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ faculty.user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone Number</th>
+                            <td>{{ faculty.user.phone_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Aadhar Number</th>
+                            <td>{{ faculty.aadhar_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Qualification</th>
+                            <td>{{ faculty.qualification }}</td>
+                        </tr>
+                        <tr>
+                            <th>Specialization</th>
+                            <td>{{ faculty.specialization }}</td>
+                        </tr>
+                        <tr>
+                            <th>Faculty Role</th>
+                            <td>{{ faculty.faculty_role }}</td>
+                        </tr>
+                        <tr>
+                            <th>Experience (Years)</th>
+                            <td>{{ faculty.experience_years }}</td>
+                        </tr>
+                        <tr>
+                            <th>Salary</th>
+                            <td>₹ {{ faculty.salary }}</td>
+                        </tr>
+                        <tr>
+                            <th>Joining Date</th>
+                            <td>{{ faculty.joining_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td>{{ faculty.address }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date Joined (System)</th>
+                            <td>{{ faculty.user.date_joined }}</td>
+                        </tr>
+                    </table>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-4 d-flex gap-2">
+
+                        <a href="{% url 'edit_faculty_view' faculty.id %}"
+                           class="btn btn-warning">
+                           ✏ Edit
+                        </a>
+
+                        <a href="{% url 'delete_faculty_view' faculty.id %}"
+                           class="btn btn-danger">
+                           🗑 Delete
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

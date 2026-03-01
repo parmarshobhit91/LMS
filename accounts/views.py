@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from students.models import StudentProfile
+from faculty.models import FacultyProfile
+
 # Create your views here.
 def home_view(request):
     return render(request, 'home.html')
@@ -50,8 +52,23 @@ def faculty_register_view(request):
             last_name = last_name,
             role='faculty'
         )
+
+        user2 = FacultyProfile.objects.create(
+            user = user,
+            employee_id = request.POST.get('employee_id'),
+            aadhar_number = request.POST.get('aadhar_number'),
+            qualification = request.POST.get('qualification'),
+            specialization = request.POST.get('specialization'),
+            faculty_role = request.POST.get('faculty_role'),
+            experience_years = request.POST.get('experience_years'),
+            salary = request.POST.get('salary'),
+            joining_date = request.POST.get('joining_date'),
+            address = request.POST.get('address')
+        )
+
         messages.success(request, "Registration successful ! Please login to continue...")
-        return redirect('login_view')
+        if request.user.role == 'admin':
+            return redirect('manage_faculties_view')
     return render(request, 'faculty-register.html')
 
 def student_register_view(request):

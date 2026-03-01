@@ -1,0 +1,168 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}Update Faculty | LMS Admin{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>✏ Update Faculty</h4>
+        <a href="{% url 'manage_faculties_view' %}" class="btn btn-secondary">
+            ← Back to Faculties
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="row g-3">
+
+                    <!-- First Name -->
+                    <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <input type="text"
+                               name="first_name"
+                               value="{{ faculty.user.first_name }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <input type="text"
+                               name="last_name"
+                               value="{{ faculty.user.last_name }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="email"
+                               name="email"
+                               value="{{ faculty.user.email }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text"
+                               name="phone_number"
+                               value="{{ faculty.user.phone_number }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Username -->
+                    <div class="col-md-6">
+                        <label class="form-label">Username</label>
+                        <input type="text"
+                               name="username"
+                               value="{{ faculty.user.username }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Employee ID -->
+                    <div class="col-md-6">
+                        <label class="form-label">Employee ID</label>
+                        <input type="text"
+                               name="employee_id"
+                               value="{{ faculty.employee_id }}"
+                               class="form-control"
+                               readonly>
+                    </div>
+
+                    <!-- Qualification -->
+                    <div class="col-md-6">
+                        <label class="form-label">Qualification</label>
+                        <input type="text"
+                               name="qualification"
+                               value="{{ faculty.qualification }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Specialization -->
+                    <div class="col-md-6">
+                        <label class="form-label">Specialization</label>
+                        <input type="text"
+                               name="specialization"
+                               value="{{ faculty.specialization }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Faculty Role -->
+                    <div class="col-md-6">
+                        <label class="form-label">Faculty Role</label>
+                        <input type="text"
+                               name="faculty_role"
+                               value="{{ faculty.faculty_role }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="col-md-6">
+                        <label class="form-label">Experience (Years)</label>
+                        <input type="number"
+                               name="experience_years"
+                               value="{{ faculty.experience_years }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Salary -->
+                    <div class="col-md-6">
+                        <label class="form-label">Salary</label>
+                        <input type="number"
+                               name="salary"
+                               value="{{ faculty.salary }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Joining Date -->
+                    <div class="col-md-6">
+                        <label class="form-label">Joining Date</label>
+                        <input type="date"
+                               name="joining_date"
+                               value="{{ faculty.joining_date|date:'Y-m-d' }}"
+                               class="form-control">
+                    </div>
+
+                    <!-- Address -->
+                    <div class="col-md-12">
+                        <label class="form-label">Address</label>
+                        <textarea name="address"
+                                  class="form-control"
+                                  rows="3">{{ faculty.address }}</textarea>
+                    </div>
+
+                    <!-- Active Status -->
+                    <div class="col-md-6">
+                        <label class="form-label">Active</label>
+                        <select name="active" class="form-control">
+                            <option value="True" {% if faculty.user.is_active %}selected{% endif %}>True</option>
+                            <option value="False" {% if not faculty.user.is_active %}selected{% endif %}>False</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Submit Button -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        Update Faculty
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

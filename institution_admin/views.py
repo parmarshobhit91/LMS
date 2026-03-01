@@ -30,6 +30,11 @@ def institution_dashboard_view(request):
 @user_passes_test(is_institution_admin)
 def manage_students_view(request):
     students = StudentProfile.objects.all()
+    search_query = request.GET.get('search')
+    if search_query:
+        students = students.filter(
+            user__username__icontains=search_query
+        )
     context = {
         'students' : students
     }
