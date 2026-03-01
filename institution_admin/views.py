@@ -33,7 +33,8 @@ def manage_students_view(request):
     search_query = request.GET.get('search')
     if search_query:
         students = students.filter(
-            user__username__icontains=search_query
+            user__username__icontains=search_query,
+            user__email__icontains=search_query,
         )
     context = {
         'students' : students
@@ -75,6 +76,7 @@ def delete_student_view(request, enrollment_id):
 def edit_student_view(request, enrollment_id):
     student = get_object_or_404(StudentProfile, enrollment_number=enrollment_id)
     # student = StudentProfile.objects.select_for_update().get(enrollment_number=enrollment_id)
+    courses = Course.objects.all()
 
     if request.user.role not in ['admin', 'faculty', 'Admin', 'Faculty']:
         return redirect('home_view')
@@ -112,7 +114,7 @@ def edit_student_view(request, enrollment_id):
         student.user.save()
         student.save()
         return redirect('admin_manage_students_view')
-    return render(request, 'edit_student.html')
+    return render(request, 'edit_student.html', {'courses': courses})
 
 @login_required
 @user_passes_test(is_institution_admin)

@@ -72,14 +72,16 @@
                                readonly>
                     </div>
 
-                    <!-- Course Enrolled -->
-                    <div class="col-md-6">
-                        <label class="form-label">Course Enrolled</label>
-                        <input type="text"
-                               name="course_enrolled"
-                               value="{{ student.course_enrolled }}"
-                               class="form-control">
-                    </div>
+                     <!-- Course -->
+                        <div class="mb-3">
+                            <label class="form-label">Course</label>
+                            <select name="course_name" class="form-select" required>
+                                <option value="">Select Course</option>
+                                {% for course in courses %}
+                                <option value="{{ course.id }}">{{ course.course_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
                     <!-- User name -->
                     <div class="col-md-6">

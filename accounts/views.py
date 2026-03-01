@@ -3,8 +3,9 @@ from . models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
-from students.models import StudentProfile
+from students.models import StudentProfile, StudentCourseEnrollment
 from faculty.models import FacultyProfile
+from courses.models import Course
 
 # Create your views here.
 def home_view(request):
@@ -14,6 +15,9 @@ def register_view(request):
     return render(request, 'register.html')
 
 def faculty_register_view(request):
+
+    roles = FacultyProfile.ROLE_CHOICES
+
     if request.method == "POST":
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -69,9 +73,12 @@ def faculty_register_view(request):
         messages.success(request, "Registration successful ! Please login to continue...")
         if request.user.role == 'admin':
             return redirect('manage_faculties_view')
-    return render(request, 'faculty-register.html')
+        
+    return render(request, 'faculty-register.html', {'roles': roles})
 
 def student_register_view(request):
+    courses = Course.objects.all()
+
     if request.method == "POST":
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -81,9 +88,10 @@ def student_register_view(request):
         password = request.POST.get('password1')
         confirm_password = request.POST.get('password2')
         enrollment_id = request.POST.get('enrollment_id')
-        course_name = request.POST.get('course_name')
+        course_id = request.POST.get('course_name')  # form field is course_name
         academic_year = request.POST.get('academic_year')
 
+        # Validations
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already taken!")
             return redirect('student_register_view')
@@ -96,38 +104,48 @@ def student_register_view(request):
             messages.error(request, "Passwords do not match. Try again!")
             return redirect('student_register_view')
         
-        if " " in username:
-            messages.error(request, "Username cannot contain spaces!")
+        if " " in username or " " in password:
+            messages.error(request, "Username and password cannot contain spaces!")
             return redirect('student_register_view')
 
-        if " " in password:
-            messages.error(request, "Password cannot contain spaces!")
+        # Get course object
+        try:
+            course = Course.objects.get(id=course_id)
+        except Course.DoesNotExist:
+            messages.error(request, "Selected course does not exist!")
             return redirect('student_register_view')
-        
+
+        # Create user
         user = User.objects.create_user(
             username=username,
             email=email,
             password=password,
-            phone_number = phone_number,
-            first_name = first_name,
-            last_name = last_name,
+            phone_number=phone_number,
+            first_name=first_name,
+            last_name=last_name,
             role='student'
         )
 
-        user2 = StudentProfile.objects.create(
-            user = user,
-            enrollment_number = enrollment_id,
-            course_enrolled = course_name,
-            academic_year = academic_year
+        # Create student profile
+        student_profile = StudentProfile.objects.create(
+            user=user,
+            enrollment_number=enrollment_id,
+            academic_year=academic_year
         )
 
-        messages.success(request, "Registration successful ! Please login to continue...")
+        # Link student to course through StudentCourseEnrollment
+        StudentCourseEnrollment.objects.create(
+            student=student_profile,
+            course=course
+        )
 
-        if request.user.role == 'admin':
+        messages.success(request, "Registration successful! Please login to continue...")
+        if request.user.is_authenticated and request.user.role == 'admin':
             return redirect('admin_manage_students_view')
         else:
-            return redirect('faculty_manage_students_view')
-    return render(request, 'student-register.html')
+            return redirect('login_view')
+
+    return render(request, 'student-register.html', {'courses': courses})
 
 def login_view(request):
     if request.method == "POST":

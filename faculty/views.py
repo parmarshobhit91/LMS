@@ -33,6 +33,7 @@ def faculty_details_view(request, id):
 
 def edit_faculty_view(request, id):
     faculty = get_object_or_404(FacultyProfile, id=id)
+    roles = FacultyProfile.ROLE_CHOICES
 
     if request.method == "POST":
 
@@ -57,7 +58,8 @@ def edit_faculty_view(request, id):
         return redirect('faculty_details_view', id=faculty.id)
 
     return render(request, 'edit_faculty.html', {
-        'faculty': faculty
+        'faculty': faculty,
+        'roles': roles
     })
 
 def delete_faculty_view(request, id):

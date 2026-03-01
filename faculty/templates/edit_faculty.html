@@ -97,13 +97,16 @@
                     </div>
 
                     <!-- Faculty Role -->
-                    <div class="col-md-6">
-                        <label class="form-label">Faculty Role</label>
-                        <input type="text"
-                               name="faculty_role"
-                               value="{{ faculty.faculty_role }}"
-                               class="form-control">
-                    </div>
+                     <!-- Faculty Role -->
+                        <div class="mb-3">
+                            <label class="form-label">Faculty Role</label>
+                            <select name="faculty_role" class="form-select" required>
+                                <option value="">Select Role</option>
+                                {% for value, label in roles %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
                     <!-- Experience -->
                     <div class="col-md-6">

@@ -41,7 +41,7 @@ class StudentCourseEnrollment(models.Model):
         on_delete=models.CASCADE
     )
 
-    enrolled_on = models.DateField()
+    enrolled_on = models.DateField(blank=True, null=True)
 
     class Meta:
         unique_together = ('student', 'course')

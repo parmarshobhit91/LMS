@@ -139,10 +139,9 @@
                             <label class="form-label">Faculty Role</label>
                             <select name="faculty_role" class="form-select" required>
                                 <option value="">Select Role</option>
-                                <option value="Instructor">Instructor</option>
-                                <option value="Hod">Hod</option>
-                                <option value="Admissions_officer">Admissions_officer</option>
-                                <option value="Finance_officer">Finance_officer</option>
+                                {% for value, label in roles %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
                             </select>
                         </div>
 
