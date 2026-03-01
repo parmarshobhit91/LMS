@@ -55,10 +55,17 @@
                     <td>{{ forloop.counter }}</td>
 
                     <td>
-                        <img src="{% static 'images/default-profile.png' %}"
-                             width="40"
-                             height="40"
-                             class="rounded-circle">
+                        {% if student.user.profile_image %}
+                            <img src="{{ student.user.profile_image.url }}" 
+                                width="40" 
+                                height="40" 
+                                class="rounded-circle">
+                        {% else %}
+                            <img src="{% static 'images/default-profile.png' %}" 
+                                width="40" 
+                                height="40" 
+                                class="rounded-circle">
+                        {% endif %}
                     </td>
 
                     <td>{{ student.user.username }}</td>

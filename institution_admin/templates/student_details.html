@@ -5,6 +5,19 @@
 
 {% block content %}
 
+<style>
+.profile-image {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #0d6efd;
+    padding: 4px;
+    background-color: #f8f9fa;
+    margin-bottom: 15px;
+}
+</style>
+
 <div class="container-fluid">
 
     <!-- Page Header -->
@@ -22,10 +35,13 @@
             <div class="card shadow-sm text-center">
                 <div class="card-body">
 
-                    <img src="{% static 'images/default-profile.png' %}"
-                         class="rounded-circle mb-3"
-                         width="120"
-                         height="120">
+                    {% if student.user.profile_image %}
+                        <img src="{{ student.user.profile_image.url }}" 
+                            class="profile-image">
+                    {% else %}
+                        <img src="{% static 'images/default-profile.png' %}" 
+                            class="profile-image">
+                    {% endif %}
 
                     <h5 class="fw-bold">
                         {{ student.user.first_name }} {{ student.user.last_name }}

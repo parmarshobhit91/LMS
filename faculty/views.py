@@ -52,6 +52,10 @@ def edit_faculty_view(request, id):
         faculty.joining_date = request.POST.get('joining_date')
         faculty.address = request.POST.get('address')
 
+        profile_image = request.FILES.get('profile_image')
+        if profile_image:
+            faculty.user.profile_image = profile_image
+
         faculty.user.save()
         faculty.save()
 

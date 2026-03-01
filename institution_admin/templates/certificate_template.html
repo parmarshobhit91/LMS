@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Course Completion Certificate</title>
-
+    <meta charset="UTF-8">
+    <title>Course Completion Certificates</title>
     <style>
         body {
             font-family: 'Georgia', serif;
@@ -15,19 +15,21 @@
             padding: 50px;
             background: white;
             text-align: center;
+            page-break-after: always; /* Ensures each certificate prints on a new page */
         }
 
         .certificate-title {
             font-size: 40px;
             font-weight: bold;
             margin-bottom: 20px;
+            color: #0d6efd;
         }
 
         .student-name {
             font-size: 30px;
             font-weight: bold;
-            color: #0d6efd;
             margin: 20px 0;
+            color: #1cc88a;
         }
 
         .details {
@@ -45,32 +47,36 @@
 
 <body>
 
-<div class="certificate-container">
+{% if certificates %}
+    {% for cert in certificates %}
+    <div class="certificate-container">
+        <div class="certificate-title">
+            🎓 Certificate of Completion
+        </div>
 
-    <div class="certificate-title">
-        🎓 Certificate of Completion
+        <p>This is to certify that</p>
+
+        <div class="student-name">
+            {{ cert.student_first_name }} {{ cert.student_last_name }}
+        </div>
+
+        <p>has successfully completed the course</p>
+
+        <h3>{{ cert.course_name }}</h3>
+
+        <div class="details">
+            Completion Date: {{ cert.completion_date }} <br>
+            Certificate ID: {{ cert.certificate_id }}
+        </div>
+
+        <div class="footer">
+            LMS Official Certification
+        </div>
     </div>
-
-    <p>This is to certify that</p>
-
-    <div class="student-name">
-        {{ student_first_name }} {{ student_last_name }}
-    </div>
-
-    <p>has successfully completed the course</p>
-
-    <h3>{{ course_name }}</h3>
-
-    <div class="details">
-        Completion Date: {{ completion_date }} <br>
-        Certificate ID: {{ certificate_id }}
-    </div>
-
-    <div class="footer">
-        LMS Official Certification
-    </div>
-
-</div>
+    {% endfor %}
+{% else %}
+    <p>No courses found for this student.</p>
+{% endif %}
 
 </body>
 </html>
