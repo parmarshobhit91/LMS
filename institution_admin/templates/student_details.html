@@ -83,7 +83,14 @@
                         </tr>
                         <tr>
                             <th>Course Enrolled</th>
-                            <td>{{ student.course_enrolled }}</td>
+                            <td>
+                                {% for course in student.course_enrolled.all %}
+                                    <span class="badge bg-info">{{ course.course_name }}</span>
+                                {% empty %}
+                                    <span class="text-muted">No courses</span>
+                                {% endfor %}
+                            </td>
+
                         </tr>
                         <tr>
                             <th>Date Joined</th>

@@ -1,11 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from . models import *
 from django.core.paginator import Paginator
-
-
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
 
+def is_institution_admin(user):
+    return user.role == 'admin'
+
+@login_required
+@user_passes_test(is_institution_admin)
 def manage_faculties_view(request):
     faculty_list = FacultyProfile.objects.all()
 
@@ -24,6 +28,8 @@ def manage_faculties_view(request):
     }
     return render(request, 'manage_faculties.html', context)
 
+@login_required
+@user_passes_test(is_institution_admin)
 def faculty_details_view(request, id):
     faculty = get_object_or_404(FacultyProfile, id=id)
     context = {
@@ -31,6 +37,8 @@ def faculty_details_view(request, id):
     }
     return render(request, 'faculty_details.html', context)
 
+@login_required
+@user_passes_test(is_institution_admin)
 def edit_faculty_view(request, id):
     faculty = get_object_or_404(FacultyProfile, id=id)
     roles = FacultyProfile.ROLE_CHOICES
@@ -66,6 +74,8 @@ def edit_faculty_view(request, id):
         'roles': roles
     })
 
+@login_required
+@user_passes_test(is_institution_admin)
 def delete_faculty_view(request, id):
     faculty = get_object_or_404(FacultyProfile, id=id)
     faculty.delete()

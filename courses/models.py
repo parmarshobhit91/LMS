@@ -13,6 +13,7 @@ class Course(models.Model):
     course_duration = models.CharField(max_length=100)
     description = models.CharField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    course_fee = models.PositiveIntegerField(blank=True, null=True)
 
     subjects = models.ManyToManyField(Subject, blank=True)
 

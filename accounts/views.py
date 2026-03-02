@@ -6,14 +6,23 @@ from django.http import HttpResponse
 from students.models import StudentProfile, StudentCourseEnrollment
 from faculty.models import FacultyProfile
 from courses.models import Course
+from django.contrib.auth.decorators import login_required, user_passes_test
+
 
 # Create your views here.
+
+def is_institution_admin(user):
+    return user.role == 'admin'
+
+
 def home_view(request):
     return render(request, 'home.html')
 
 def register_view(request):
     return render(request, 'register.html')
 
+@login_required
+@user_passes_test(is_institution_admin)
 def faculty_register_view(request):
 
     roles = FacultyProfile.ROLE_CHOICES
@@ -76,6 +85,8 @@ def faculty_register_view(request):
         
     return render(request, 'faculty-register.html', {'roles': roles})
 
+@login_required
+@user_passes_test(is_institution_admin)
 def student_register_view(request):
     courses = Course.objects.all()
 

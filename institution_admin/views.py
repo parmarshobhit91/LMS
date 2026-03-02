@@ -80,57 +80,64 @@ def delete_student_view(request, enrollment_id):
     
     student.user.delete()
     return redirect('admin_manage_students_view')
-
 @login_required
 @user_passes_test(is_institution_admin)
 def edit_student_view(request, enrollment_id):
+    # Get the student profile
     student = get_object_or_404(StudentProfile, enrollment_number=enrollment_id)
-    # student = StudentProfile.objects.select_for_update().get(enrollment_number=enrollment_id)
+
+    # Get all courses
     courses = Course.objects.all()
+
+    # IDs of currently enrolled courses
     enrolled_ids = student.course_enrolled.values_list('id', flat=True)
 
-    if request.user.role not in ['admin', 'faculty', 'Admin', 'Faculty']:
+    # Check role
+    if request.user.role.lower() not in ['admin', 'faculty']:
         return redirect('home_view')
-    
+
     if request.method == "POST":
-        firstname = request.POST.get('first_name')
-        if firstname:
-            student.user.first_name = firstname
-
-        lastname = request.POST.get('last_name')
-        if lastname:
-            student.user.last_name = lastname
-
-        email = request.POST.get('email')
-        if email:
-            student.user.email = email
-
-        phone_number = request.POST.get('phone_number')
-        if phone_number:
-            student.user.phone_number = phone_number
+        # --- Update user fields ---
+        student.user.first_name = request.POST.get('first_name', student.user.first_name)
+        student.user.last_name = request.POST.get('last_name', student.user.last_name)
+        student.user.email = request.POST.get('email', student.user.email)
+        student.user.username = request.POST.get('username', student.user.username)
+        student.user.phone_number = request.POST.get('phone_number', student.user.phone_number)
 
         profile_image = request.FILES.get('profile_image')
         if profile_image:
             student.user.profile_image = profile_image
 
-        course_id = request.POST.get('course_name')
-        if course_id:
-            course = Course.objects.get(id=course_id)
-            StudentCourseEnrollment.objects.create(student=student, course=course)
-
-        username = request.POST.get('username')
-        if username:
-            student.user.username = username
-
+        # --- Active / Verified field ---
         is_active = request.POST.get('active')
-        if is_active:
-            student.user.is_verified = is_active
+        if is_active in ['True', 'False']:
+            student.user.is_verified = (is_active == 'True')
 
+        # --- Handle course enrollments ---
+        course_ids = request.POST.getlist('courses')  # checkbox names = "courses"
+        # Remove old enrollments
+        StudentCourseEnrollment.objects.filter(student=student).delete()
 
+        if course_ids:
+            selected_courses = Course.objects.filter(id__in=course_ids)
+            enrollments = [
+                StudentCourseEnrollment(student=student, course=c)
+                for c in selected_courses
+            ]
+            StudentCourseEnrollment.objects.bulk_create(enrollments)
+
+        # Save changes
         student.user.save()
         student.save()
+
         return redirect('admin_manage_students_view')
-    return render(request, 'edit_student.html', {'courses': courses, 'enrolled_ids': enrolled_ids, 'student':student})
+
+    # Render the edit form
+    return render(request, 'edit_student.html', {
+        'student': student,
+        'courses': courses,
+        'enrolled_ids': enrolled_ids
+    })
 
 @login_required
 @user_passes_test(is_institution_admin)
